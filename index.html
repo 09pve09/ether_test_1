@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <script src='./node_modules/web3/dist/web3.min.js'>
+
+    </script>
+  </head>
+  <body>
+    <input type="text" id='input'>
+    <button type="button" id="button">Set</button>
+    <pre id='output'>
+
+    </pre>
+    <script>
+      var web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
+      console.log(web3);
+      web3.eth.defaultAccount = web3.eth.accounts[0];
+      var Contract = web3.eth.contract([{"constant":true,"inputs":[],"name":"getFoo","outputs":[{"name":"","type":"bytes32"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_foo","type":"bytes32"}],
+      "name":"setFoo","outputs":[],"payable":false,"type":"function"}])
+      var foo = Contract.at('0xbc8283f908faaaad577340661d243936d2aca4cd');
+
+      var input = document.getElementById('input');
+      var button = document.getElementById('button');
+      var output = document.getElementById('output');
+
+      button.addEventListener('click', function(){
+        foo.setFoo(input.value);
+        output.innerHTML = web3.toAscii(foo.getFoo());
+      })
+
+    </script>
+  </body>
+</html>
